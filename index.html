@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="A11.share - Free web-based HTML/CSS/JS editor with live preview. Publish directly to GitHub Pages with no login required.">
+<meta name="keywords" content="html editor, css editor, javascript, web development, github pages, free hosting">
+<meta name="author" content="A11.share">
+<meta property="og:title" content="A11.share Publisher - Free Web Editor">
+<meta property="og:description" content="Create and publish websites instantly. Edit HTML/CSS/JS in your browser and deploy to GitHub Pages for free.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://safeeaffanxyz-commits.github.io/A11-share-Publisher/">
+<title>A11.share Publisher - Free HTML/CSS/JS Editor & GitHub Pages Hosting</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial;background:#0b1020;color:#fff}
+header{position:sticky;top:0;z-index:5;background:#11182d;padding:14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #293454}
+.logo{font-size:22px;font-weight:800}.logo b{color:#38bdf8}
+button{border:0;border-radius:12px;padding:12px 14px;font-weight:700;color:#fff;background:#263556}
+.publish{background:#16a34a}.wrap{padding:14px;max-width:1100px;margin:auto}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.card{background:#151e36;padding:15px;border-radius:15px}.card small{color:#9fb0d0}.card strong{display:block;font-size:22px;margin-top:5px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.panel{background:#11182d;border:1px solid #293454;border-radius:16px;overflow:hidden}.title{padding:12px;background:#17213a;font-weight:800}
+textarea{display:block;width:100%;height:390px;border:0;outline:0;resize:vertical;background:#070b16;color:#dbeafe;padding:14px;font:13px monospace}
+iframe{display:block;width:100%;height:390px;border:0;background:white}
+.tools{display:flex;gap:8px;flex-wrap:wrap;padding:12px}.tools button{flex:1;min-width:120px}
+section{margin-top:14px}.files{display:flex;gap:8px;flex-wrap:wrap}.file{background:#151e36;padding:12px;border-radius:12px;flex:1;min-width:140px}
+.status{margin-top:12px;padding:12px;border-radius:12px;background:#12243a;color:#bde3ff}
+.status.success{background:#064e3b;color:#d1fae5}
+.status.error{background:#7f1d1d;color:#fee2e2}
+.input-group{display:flex;gap:8px;flex-wrap:wrap;padding:12px;align-items:center}
+.input-group input{flex:1;min-width:120px;padding:10px;border:0;border-radius:8px;background:#070b16;color:#dbeafe;font-size:13px}
+.input-group input::placeholder{color:#495578}
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:10;align-items:center;justify-content:center}
+.modal.show{display:flex}
+.modal-content{background:#11182d;border:1px solid #293454;border-radius:16px;padding:20px;max-width:400px;width:90%}
+.modal-content h3{margin-top:0;color:#38bdf8}
+.modal-content input{width:100%;margin-bottom:10px;padding:10px;border:0;border-radius:8px;background:#070b16;color:#dbeafe}
+.modal-content button{width:100%;margin-top:10px;cursor:pointer}
+.modal-close{color:#9fb0d0;cursor:pointer;float:right;font-size:24px;line-height:1}
+@media(max-width:720px){.grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr 1fr}.card{padding:11px}.card strong{font-size:18px}textarea,iframe{height:330px}.input-group{flex-direction:column}.input-group input{width:100%}}
+@media(max-width:420px){.cards{gap:7px}.card small{font-size:11px}.logo{font-size:19px}header button{padding:10px}.wrap{padding:10px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">A11<b>.share</b></div>
+  <button class="publish" onclick="openPublishModal()">🚀 Publish to GitHub</button>
+</header>
+
+<div class="wrap">
+  <div class="cards">
+    <div class="card"><small>Projects</small><strong id="projects">1</strong></div>
+    <div class="card"><small>Published</small><strong id="published">0</strong></div>
+    <div class="card"><small>Status</small><strong id="state">Ready</strong></div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="title">💻 HTML / CSS / JS Editor</div>
+      <textarea id="code"><!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font-family:Arial;text-align:center;padding:40px;background:#eef6ff}
+h1{color:#2563eb}
+button{padding:12px 20px;border:0;border-radius:10px;background:#2563eb;color:white}
+</style>
+</head>
+<body>
+<h1>Welcome to A11.share 🚀</h1>
+<p>My website was created on my phone.</p>
+<button onclick="alert('Hello from A11.share!')">Tap me</button>
+</body>
+</html></textarea>
+      <div class="tools">
+        <button onclick="run()">▶ Run</button>
+        <button onclick="save()">💾 Save</button>
+        <button onclick="download()">⬇ HTML</button>
+        <button onclick="clearCode()">🗑 Clear</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="title">👀 Live Preview</div>
+      <iframe id="preview"></iframe>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="title">📁 A11.share File Area</div>
+    <div class="tools">
+      <input id="fileInput" type="file" multiple>
+    </div>
+    <div id="files" class="files"></div>
+  </section>
+
+  <section class="panel">
+    <div class="title">🌐 Publishing to GitHub Pages</div>
+    <div class="input-group">
+      <input id="ghToken" type="password" placeholder="GitHub Personal Access Token (read-only here)" title="Your token is only used locally in your browser">
+      <input id="ghUsername" type="text" placeholder="GitHub Username">
+      <input id="ghRepo" type="text" placeholder="Repository Name">
+    </div>
+    <div class="tools">
+      <button onclick="openPublishModal()">🚀 Publish to GitHub</button>
+      <button onclick="share()">🔗 Share</button>
+      <button onclick="qr()">▣ QR Info</button>
+      <button onclick="theme()">🌙 Theme</button>
+    </div>
+    <div id="status" class="status">Ready. Edit your page and tap Run.</div>
+  </section>
+</div>
+
+<!-- GitHub Publish Modal -->
+<div id="publishModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closePublishModal()">&times;</span>
+    <h3>Publish to GitHub Pages</h3>
+    <p style="color:#9fb0d0;font-size:13px;">Get a free GitHub token at: <a href="https://github.com/settings/tokens" target="_blank" style="color:#38bdf8">github.com/settings/tokens</a></p>
+    <p style="color:#9fb0d0;font-size:13px;">Create a token with <strong>repo</strong> scope. Your token stays in your browser only.</p>
+    <input id="modalToken" type="password" placeholder="Paste GitHub Personal Access Token">
+    <input id="modalUsername" type="text" placeholder="GitHub Username">
+    <input id="modalRepo" type="text" placeholder="Repository Name (e.g., my-website)">
+    <input id="modalFilename" type="text" placeholder="Filename (default: index.html)" value="index.html">
+    <button onclick="publishToGitHub()">🚀 Publish Now</button>
+    <button style="background:#495578" onclick="closePublishModal()">Cancel</button>
+  </div>
+</div>
+
+<script>
+const code=document.getElementById("code"), preview=document.getElementById("preview");
+
+function run(){preview.srcdoc=code.value; document.getElementById("state").textContent="Live";}
+
+function save(){localStorage.setItem("a11_project",code.value);msg("Project saved on this phone.");}
+
+function load(){const x=localStorage.getItem("a11_project");if(x)code.value=x;run();}
+
+function download(){
+ const blob=new Blob([code.value],{type:"text/html"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+ a.download="a11share-site.html";a.click();URL.revokeObjectURL(a.href);
+ msg("HTML file downloaded.");
+}
+
+function clearCode(){if(confirm("Clear the editor?")){code.value="";run();}}
+
+function openPublishModal(){
+ document.getElementById("modalToken").value=document.getElementById("ghToken").value;
+ document.getElementById("modalUsername").value=document.getElementById("ghUsername").value;
+ document.getElementById("modalRepo").value=document.getElementById("ghRepo").value;
+ document.getElementById("publishModal").classList.add("show");
+}
+
+function closePublishModal(){
+ document.getElementById("publishModal").classList.remove("show");
+}
+
+async function publishToGitHub(){
+ const token=document.getElementById("modalToken").value.trim();
+ const username=document.getElementById("modalUsername").value.trim();
+ const repo=document.getElementById("modalRepo").value.trim();
+ const filename=document.getElementById("modalFilename").value.trim() || "index.html";
+ 
+ if(!token || !username || !repo){
+  msgError("❌ Please fill in all fields: Token, Username, and Repository.");
+  return;
+ }
+ 
+ document.getElementById("state").textContent="Publishing...";
+ msg("📤 Publishing to GitHub...");
+ 
+ try{
+  const content=btoa(unescape(encodeURIComponent(code.value)));
+  const apiUrl=`https://api.github.com/repos/${username}/${repo}/contents/${filename}`;
+  
+  // Get current file SHA if it exists (for updates)
+  let sha=null;
+  try{
+   const getResponse=await fetch(apiUrl,{
+    headers:{"Authorization":`token ${token}`,"Accept":"application/vnd.github.v3+json"}
+   });
+   if(getResponse.ok){
+    const data=await getResponse.json();
+    sha=data.sha;
+   }
+  }catch(e){}
+  
+  const payload={
+   message:`Published from A11.share on ${new Date().toLocaleString()}`,
+   content:content,
+   branch:"gh-pages"
+  };
+  
+  if(sha)payload.sha=sha;
+  
+  const response=await fetch(apiUrl,{
+   method:"PUT",
+   headers:{
+    "Authorization":`token ${token}`,
+    "Accept":"application/vnd.github.v3+json",
+    "Content-Type":"application/json"
+   },
+   body:JSON.stringify(payload)
+  });
+  
+  if(response.ok){
+   document.getElementById("published").textContent=parseInt(document.getElementById("published").textContent)+1;
+   document.getElementById("state").textContent="Published ✓";
+   
+   // Save to localStorage for next time
+   document.getElementById("ghToken").value=token;
+   document.getElementById("ghUsername").value=username;
+   document.getElementById("ghRepo").value=repo;
+   localStorage.setItem("a11_gh_username",username);
+   localStorage.setItem("a11_gh_repo",repo);
+   
+   const liveUrl=`https://${username}.github.io/${repo}`;
+   msgSuccess(`✅ Published! View at: <a href="${liveUrl}" target="_blank" style="color:#38bdf8">${liveUrl}</a>`);
+   closePublishModal();
+  }else{
+   const errorData=await response.json();
+   msgError(`❌ GitHub Error (${response.status}): ${errorData.message}`);
+   document.getElementById("state").textContent="Error";
+  }
+ }catch(error){
+  msgError(`❌ Error: ${error.message}`);
+  document.getElementById("state").textContent="Error";
+ }
+}
+
+function share(){
+ const username=document.getElementById("ghUsername").value.trim();
+ const repo=document.getElementById("ghRepo").value.trim();
+ 
+ if(username && repo){
+  const url=`https://${username}.github.io/${repo}`;
+  if(navigator.share){
+   navigator.share({title:"A11.share Website",text:"Visit my A11.share website",url:url});
+  }else{
+   navigator.clipboard?.copyText(url).then(()=>msg("✅ Link copied: "+url));
+  }
+ }else{
+  msg("⚠️ Publish to GitHub first to enable sharing.");
+ }
+}
+
+function qr(){
+ msg("QR sharing: Use a QR code generator with your published GitHub Pages URL.");
+}
+
+function theme(){
+ document.body.classList.toggle("light");
+ document.body.style.background=document.body.classList.contains("light")?"#eef2ff":"#0b1020";
+ document.body.style.color=document.body.classList.contains("light")?"#111827":"#fff";
+}
+
+function msg(t){
+ const status=document.getElementById("status");
+ status.textContent="";
+ status.innerHTML=t;
+ status.className="status";
+}
+
+function msgSuccess(t){
+ const status=document.getElementById("status");
+ status.textContent="";
+ status.innerHTML=t;
+ status.className="status success";
+}
+
+function msgError(t){
+ const status=document.getElementById("status");
+ status.textContent="";
+ status.innerHTML=t;
+ status.className="status error";
+}
+
+document.getElementById("fileInput").addEventListener("change",e=>{
+ const box=document.getElementById("files");box.innerHTML="";
+ [...e.target.files].forEach(f=>{const d=document.createElement("div");d.className="file";d.textContent="📄 "+f.name;box.appendChild(d);});
+});
+
+code.addEventListener("input",run);
+
+// Load saved GitHub credentials
+window.addEventListener("load",()=>{
+ load();
+ const savedUsername=localStorage.getItem("a11_gh_username");
+ const savedRepo=localStorage.getItem("a11_gh_repo");
+ if(savedUsername)document.getElementById("ghUsername").value=savedUsername;
+ if(savedRepo)document.getElementById("ghRepo").value=savedRepo;
+});
+
+// Close modal when clicking outside
+document.getElementById("publishModal").addEventListener("click",e=>{
+ if(e.target.id==="publishModal")closePublishModal();
+});
+</script>
+</body>
+</html>
